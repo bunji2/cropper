@@ -11,6 +11,10 @@ Usage: cropper.exe infile_pattern [ out_dir ]
 
 you can treat wild card in infile_pattern.
 
+```
+C:\work> cropper.exe /tmp/*.png out
+```
+
 ## Config
 
 [conf.json](conf.json)
