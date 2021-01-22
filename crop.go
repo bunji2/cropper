@@ -8,7 +8,6 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 func cropSave(img image.Image, outFile string, p1, p2 [2]int) (err error) {
@@ -51,8 +50,8 @@ var acceptableExts = []string{
 }
 
 func getExt(filePath string) (ext string, ok bool) {
-	slice := strings.Split(filepath.Base(filePath), ".")
-	ext = strings.ToLower(slice[len(slice)-1]) // スライスの最後が拡張子のはず
+	ext = filepath.Ext(filePath)[1:]
+
 	for _, accebtableExt := range acceptableExts {
 		if ext == accebtableExt {
 			ok = true
