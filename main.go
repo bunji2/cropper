@@ -4,8 +4,6 @@ package main
 
 import (
 	"fmt"
-	_ "image/jpeg"
-	_ "image/png"
 	"os"
 	"path/filepath"
 )
@@ -133,7 +131,7 @@ func resolveOutDir(outDir string) (r string, err error) {
 	f, e := os.Stat(r)    // [XXX] e の値で分岐しなくて大丈夫かな？
 	if os.IsNotExist(e) { // 存在しない時
 		//err = fmt.Errorf("out_dir: %s does not exist", r)
-		err = os.MkdirAll(r, 0777) // ないなら作成しちゃった方が使いやすいのでは
+		err = os.MkdirAll(r, 0750) // ないなら作成しちゃった方が使いやすいのでは
 		if err != nil {
 			return
 		}

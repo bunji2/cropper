@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"path/filepath"
 )
 
 // Conf は設定データ
@@ -15,7 +16,7 @@ type Conf struct {
 
 func loadJSON(filePath string) (r Conf, err error) {
 	var bb []byte
-	bb, err = ioutil.ReadFile(filePath)
+	bb, err = ioutil.ReadFile(filepath.Clean(filePath)) // for CWE-22
 	if err != nil {
 		return
 	}
