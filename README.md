@@ -6,7 +6,7 @@ go implimentation of cropping images
 
 ```
 C:\work> cropper.exe
-Usage: cropper.exe infile_pattern [ out_dir ]
+Usage: cropper.exe [ -conf conf.json ] infile_pattern [ out_dir ]
 ```
 
 you can treat wild card in infile_pattern.
@@ -14,6 +14,10 @@ you can treat wild card in infile_pattern.
 ```
 C:\work> cropper.exe /tmp/*.png out
 ```
+
+If you ommit -conf option, default conf.json file is refered. 
+
+Default conf.json file must be located at the same path of cropper.exe.
 
 ## Config
 

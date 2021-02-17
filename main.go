@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	usageFmt     = "Usage: %s infile_pattern [ out_dir ]\n"
+	usageFmt     = "Usage: %s [ -conf conf.json ] infile_pattern [ out_dir ]\n"
 	confFileName = "conf.json"
 )
 
@@ -33,12 +33,31 @@ func run() (exitCode int) {
 		return
 	}
 
+	args := os.Args[1:]
+
+	confFilePath := ""
+
+	// 引数チェック2
+	if args[0] == "-conf" {
+		if len(args) < 3 {
+			fmt.Fprintf(os.Stderr, usageFmt, os.Args[0])
+			exitCode = argError
+			return
+		}
+
+		confFilePath = args[1]
+		args = args[2:]
+	}
+
 	// 設定ファイルパスの取得
-	confFilePath, err := resolveConfFile()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		exitCode = confFileError
-		return
+	if confFilePath == "" {
+		cfFilePath, err := resolveConfFile()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			exitCode = confFileError
+			return
+		}
+		confFilePath = cfFilePath
 	}
 
 	// 設定ファイルの読み出し
@@ -51,7 +70,7 @@ func run() (exitCode int) {
 
 	// 引数で指定された入力ファイルのパターン（ワイルドカード）を展開し
 	// 入力ファイルリストを取得
-	inFiles, err := filepath.Glob(os.Args[1])
+	inFiles, err := filepath.Glob(args[0])
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		exitCode = argError
@@ -64,8 +83,8 @@ func run() (exitCode int) {
 
 	outDir := conf.OutDir // デフォルトは設定ファイルの値
 
-	if len(os.Args) > 2 { // 引数で出力先が指定された場合
-		outDir, err = resolveOutDir(os.Args[2])
+	if len(args) > 1 { // 引数で出力先が指定された場合
+		outDir, err = resolveOutDir(args[1])
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			exitCode = argError
